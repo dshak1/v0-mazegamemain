@@ -321,6 +321,52 @@ forward(12)`,
   return codes[levelId as keyof typeof codes] || codes[1]
 }
 
+const getLevelHints = (levelId: number) => {
+  const hints = {
+    1: {
+      title: "Basic Movement",
+      tips: [
+        "🎯 Goal: Navigate to the target using simple commands",
+        "📝 Use forward(n) to move n steps ahead",
+        "🔄 Use left() and right() to turn 90 degrees",
+        "💡 Plan your path: count steps and turns needed",
+        "⚡ Optimal solution: 28 steps",
+      ],
+    },
+    2: {
+      title: "Dijkstra's Algorithm",
+      tips: [
+        "🎯 Goal: Find shortest path considering all edges",
+        "📊 Dijkstra explores all possible paths systematically",
+        "🔍 Algorithm maintains distance to each node",
+        "💡 Think about weighted graph traversal",
+        "⚡ Focus on exploring neighbors efficiently",
+      ],
+    },
+    3: {
+      title: "A* Search",
+      tips: [
+        "🎯 Goal: Use heuristics for efficient pathfinding",
+        "🧠 A* combines actual cost + estimated cost to goal",
+        "📐 Manhattan distance is a good heuristic here",
+        "💡 Prioritize paths that seem most promising",
+        "⚡ Should be faster than Dijkstra with good heuristic",
+      ],
+    },
+    4: {
+      title: "Minimum Spanning Tree",
+      tips: [
+        "🎯 Goal: Connect all reachable nodes efficiently",
+        "🌳 MST finds minimum cost to connect all nodes",
+        "🔗 Think about Kruskal's or Prim's algorithm",
+        "💡 Focus on avoiding cycles while connecting",
+        "⚡ Not about shortest path, but minimum connection cost",
+      ],
+    },
+  }
+  return hints[levelId as keyof typeof hints] || hints[1]
+}
+
 export default function GameInterface({ levelId, onBackToLevels, onBackToMenu }: GameInterfaceProps) {
   const levelData = createLevelMaze(levelId)
 
@@ -345,6 +391,7 @@ export default function GameInterface({ levelId, onBackToLevels, onBackToMenu }:
   })
 
   const levelInfo = getLevelInfo(levelId)
+  const levelHints = getLevelHints(levelId)
 
   const executeCode = async () => {
     setIsRunning(true)
@@ -455,50 +502,66 @@ export default function GameInterface({ levelId, onBackToLevels, onBackToMenu }:
 
       {/* Main Game Area */}
       <div className="flex flex-1 gap-4">
-        {/* Code Editor */}
-        <Card className="flex-1 p-4 border-2 border-foreground">
-          <div className="space-y-4 h-full flex flex-col">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-bold pixel-text">CODE EDITOR</h2>
-              <div className="flex space-x-2">
-                <Button
-                  onClick={executeCode}
-                  disabled={isRunning}
-                  className="retro-button pixel-text bg-primary hover:bg-primary/90 text-primary-foreground"
-                >
-                  {isRunning ? "⏳ RUNNING..." : "▶ RUN CODE"}
-                </Button>
-                <Button
-                  onClick={resetLevel}
-                  variant="outline"
-                  className="retro-button pixel-text border-foreground bg-transparent"
-                >
-                  🔄 RESET
-                </Button>
+        {/* Left Side - Code Editor and Hints */}
+        <div className="flex-1 flex flex-col gap-4">
+          {/* Code Editor */}
+          <Card className="flex-1 p-4 border-2 border-yellow-400 bg-gradient-to-br from-slate-900 to-slate-800 shadow-lg">
+            <div className="space-y-4 h-full flex flex-col">
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg font-bold pixel-text text-yellow-300">💻 CODE EDITOR</h2>
+                <div className="flex space-x-2">
+                  <Button
+                    onClick={executeCode}
+                    disabled={isRunning}
+                    className="retro-button pixel-text bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-400 hover:to-emerald-500 text-white font-bold shadow-lg"
+                  >
+                    {isRunning ? "⏳ RUNNING..." : "▶ RUN CODE"}
+                  </Button>
+                  <Button
+                    onClick={resetLevel}
+                    variant="outline"
+                    className="retro-button pixel-text border-orange-400 bg-transparent text-orange-300 hover:bg-orange-400/20"
+                  >
+                    🔄 RESET
+                  </Button>
+                </div>
               </div>
+
+              <Textarea
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                className="flex-1 font-mono text-sm bg-slate-950 border-2 border-cyan-400 resize-none text-green-300 placeholder:text-green-600 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20"
+                placeholder="# Write your algorithm here..."
+              />
+
+              {/* Output */}
+              {gameState.output.length > 0 && (
+                <div className="p-3 bg-slate-950 border-2 border-red-400 rounded text-green-300">
+                  {gameState.output.map((line, index) => (
+                    <p key={index} className="text-sm pixel-text font-mono">
+                      {line}
+                    </p>
+                  ))}
+                </div>
+              )}
             </div>
+          </Card>
 
-            <Textarea
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              className="flex-1 font-mono text-sm bg-background border-foreground resize-none"
-              placeholder="Write your algorithm here..."
-            />
+          {/* Hints Section */}
+          <Card className="p-4 border-2 border-blue-400 bg-gradient-to-br from-blue-900/50 to-purple-900/50 shadow-lg">
+            <h2 className="text-lg font-bold pixel-text text-blue-300 mb-3">💡 {levelHints.title} - HINTS</h2>
+            <div className="space-y-2">
+              {levelHints.tips.map((tip, index) => (
+                <div key={index} className="flex items-start space-x-2">
+                  <span className="text-cyan-400 pixel-text text-xs mt-0.5">•</span>
+                  <p className="text-sm pixel-text text-cyan-200 leading-relaxed">{tip}</p>
+                </div>
+              ))}
+            </div>
+          </Card>
+        </div>
 
-            {/* Output */}
-            {gameState.output.length > 0 && (
-              <div className="p-3 bg-secondary border border-foreground rounded">
-                {gameState.output.map((line, index) => (
-                  <p key={index} className="text-sm pixel-text">
-                    {line}
-                  </p>
-                ))}
-              </div>
-            )}
-          </div>
-        </Card>
-
-        {/* Game View */}
+        {/* Right Side - Game View */}
         <div className="flex flex-col space-y-4">
           {/* Maze Display */}
           <Card className="p-4 border-2 border-foreground">

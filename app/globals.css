@@ -70,6 +70,26 @@
   --sidebar-ring: oklch(0.25 0.15 140);
 }
 
+/* Added professional dashboard theme inspired by Vercel observability */
+.dashboard-dark {
+  --background: oklch(0.08 0 0); /* Very dark background like Vercel dashboards */
+  --foreground: oklch(0.85 0 0); /* Light text */
+  --card: oklch(0.12 0 0); /* Dark cards */
+  --card-foreground: oklch(0.85 0 0);
+  --primary: oklch(0.75 0.15 85); /* Bright yellow accent like Alpaca */
+  --primary-foreground: oklch(0.08 0 0);
+  --secondary: oklch(0.15 0 0);
+  --secondary-foreground: oklch(0.85 0 0);
+  --muted: oklch(0.15 0 0);
+  --muted-foreground: oklch(0.55 0 0);
+  --accent: oklch(0.75 0.15 85); /* Yellow accent */
+  --accent-foreground: oklch(0.08 0 0);
+  --border: oklch(0.2 0 0); /* Subtle borders */
+  --success: oklch(0.6 0.15 140); /* Green for success */
+  --warning: oklch(0.7 0.2 60); /* Orange for warnings */
+  --error: oklch(0.6 0.25 15); /* Red for errors */
+}
+
 @theme inline {
   --font-sans: var(--font-geist-mono); /* Using mono font for retro feel */
   --font-mono: var(--font-geist-mono);
@@ -169,4 +189,62 @@
     rgba(0, 0, 0, 0.1) 4px
   );
   pointer-events: none;
+}
+
+.algorithm-grid {
+  background: linear-gradient(90deg, oklch(0.2 0 0) 1px, transparent 1px),
+    linear-gradient(oklch(0.2 0 0) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.algorithm-node {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.algorithm-node.exploring {
+  animation: pulse-explore 1s ease-in-out infinite;
+}
+
+.algorithm-node.path {
+  animation: path-glow 0.5s ease-in-out;
+}
+
+@keyframes pulse-explore {
+  0%,
+  100% {
+    background-color: oklch(0.75 0.15 85);
+    box-shadow: 0 0 10px oklch(0.75 0.15 85);
+  }
+  50% {
+    background-color: oklch(0.85 0.2 85);
+    box-shadow: 0 0 20px oklch(0.85 0.2 85);
+  }
+}
+
+@keyframes path-glow {
+  0% {
+    background-color: oklch(0.6 0.15 140);
+    transform: scale(1);
+  }
+  50% {
+    background-color: oklch(0.7 0.2 140);
+    transform: scale(1.1);
+  }
+  100% {
+    background-color: oklch(0.6 0.15 140);
+    transform: scale(1);
+  }
+}
+
+.metric-card {
+  background: linear-gradient(135deg, oklch(0.12 0 0) 0%, oklch(0.15 0 0) 100%);
+  border: 1px solid oklch(0.2 0 0);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.chart-line {
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }

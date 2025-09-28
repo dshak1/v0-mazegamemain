@@ -5,9 +5,11 @@ import { Card } from "@/components/ui/card"
 
 interface MainMenuProps {
   onPlay: () => void
+  onLeaderboard: () => void
+  onVisualizer: () => void
 }
 
-export default function MainMenu({ onPlay }: MainMenuProps) {
+export default function MainMenu({ onPlay, onLeaderboard, onVisualizer }: MainMenuProps) {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen space-y-8">
       {/* Retro Gaming Device */}
@@ -68,6 +70,14 @@ export default function MainMenu({ onPlay }: MainMenuProps) {
         </Button>
 
         <Button
+          onClick={onVisualizer}
+          className="retro-button h-12 text-lg pixel-text bg-accent hover:bg-accent/90 text-accent-foreground"
+        >
+          🔬 ALGORITHM LAB
+        </Button>
+
+        <Button
+          onClick={onLeaderboard}
           variant="outline"
           className="retro-button h-12 text-lg pixel-text border-2 border-foreground bg-transparent"
         >
