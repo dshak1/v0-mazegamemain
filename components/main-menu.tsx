@@ -19,8 +19,8 @@ export default function MainMenu({ onPlay, onLeaderboard, onVisualizer }: MainMe
           <div className="mx-6 mt-6 h-48 retro-screen rounded-sm scanlines flex items-center justify-center">
             <div className="text-center space-y-2">
               <div className="text-primary text-2xl pixel-text animate-pulse">████████</div>
-              <div className="text-primary text-sm pixel-text">MAZE QUEST</div>
-              <div className="text-primary/70 text-xs pixel-text">ALGORITHM EDITION</div>
+              <div className="text-primary text-sm pixel-text">PYPATH</div>
+              <div className="text-primary/70 text-xs pixel-text">REAL-WORLD ALGORITHMS</div>
             </div>
           </div>
 
@@ -53,10 +53,10 @@ export default function MainMenu({ onPlay, onLeaderboard, onVisualizer }: MainMe
 
       {/* Game Title */}
       <div className="text-center space-y-4">
-        <h1 className="text-6xl font-bold pixel-text text-foreground">MAZE QUEST</h1>
-        <p className="text-xl pixel-text text-muted-foreground">Algorithm Learning Platform</p>
+        <h1 className="text-6xl font-bold pixel-text text-foreground">PYPATH</h1>
+        <p className="text-xl pixel-text text-muted-foreground">Real-World Algorithm Platform</p>
         <p className="text-sm pixel-text text-muted-foreground max-w-md">
-          Master pathfinding algorithms through interactive maze challenges. Code your way to victory!
+          Learn how Google Maps, game AI, and network routing actually work. Code real algorithms used in production!
         </p>
       </div>
 
@@ -74,6 +74,16 @@ export default function MainMenu({ onPlay, onLeaderboard, onVisualizer }: MainMe
           className="retro-button h-12 text-lg pixel-text bg-accent hover:bg-accent/90 text-accent-foreground"
         >
           🔬 ALGORITHM LAB
+        </Button>
+
+        <Button
+          onClick={() => {
+            // Navigate to industry applications
+            window.dispatchEvent(new CustomEvent("navigate-industry"))
+          }}
+          className="retro-button h-12 text-lg pixel-text bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-400 hover:to-orange-400 text-black font-bold"
+        >
+          🏭 REAL-WORLD USES
         </Button>
 
         <Button
@@ -101,8 +111,8 @@ export default function MainMenu({ onPlay, onLeaderboard, onVisualizer }: MainMe
 
       {/* Footer */}
       <div className="text-center text-xs pixel-text text-muted-foreground">
-        <p>Press ▶ PLAY GAME to begin your algorithmic adventure</p>
-        <p className="mt-2">© 2025 Maze Quest - Algorithm Learning Platform</p>
+        <p>Press ▶ PLAY GAME to begin your real-world algorithm journey</p>
+        <p className="mt-2">© 2025 PyPath - Where Algorithms Meet Reality</p>
       </div>
     </div>
   )

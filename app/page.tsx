@@ -6,8 +6,9 @@ import LevelSelect from "@/components/level-select"
 import GameInterface from "@/components/game-interface"
 import Leaderboard from "@/components/leaderboard"
 import AlgorithmVisualizer from "@/components/algorithm-visualizer"
+import IndustryApplications from "@/components/industry-applications"
 
-type GameState = "menu" | "levelSelect" | "playing" | "leaderboard" | "visualizer"
+type GameState = "menu" | "levelSelect" | "playing" | "leaderboard" | "visualizer" | "industry"
 
 export default function MazeGame() {
   const [gameState, setGameState] = useState<GameState>("menu")
@@ -23,6 +24,10 @@ export default function MazeGame() {
 
   const handleVisualizer = () => {
     setGameState("visualizer")
+  }
+
+  const handleIndustry = () => {
+    setGameState("industry")
   }
 
   const handleLevelSelect = (levelId: number) => {
@@ -55,6 +60,8 @@ export default function MazeGame() {
         {gameState === "leaderboard" && <Leaderboard onBack={handleBackToMenu} />}
 
         {gameState === "visualizer" && <AlgorithmVisualizer onBack={handleBackToMenu} />}
+
+        {gameState === "industry" && <IndustryApplications onBack={handleBackToMenu} />}
       </div>
     </div>
   )

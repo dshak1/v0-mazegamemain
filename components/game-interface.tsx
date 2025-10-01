@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Textarea } from "@/components/ui/textarea"
+import AICodeReview from "@/components/ai-code-review"
 
 interface GameInterfaceProps {
   levelId: number
@@ -278,42 +279,35 @@ const getStarterCode = (levelId: number) => {
 # left()     - turn left 90 degrees  
 # right()    - turn right 90 degrees
 
-# Try this path (but it's not optimal!):
+# Optimal solution - just hit RUN CODE!
 forward(4)
 right()
-forward(7)
+forward(12)
 left()
 forward(8)
 right()
-forward(12)`,
+forward(4)`,
     2: `# Level 2: Dijkstra's Algorithm
 # Find the shortest path considering all edges
+# This solution navigates around the wall pattern
 
-# Basic movement example:
-forward(3)
+# Optimal Dijkstra path:
+forward(12)
 right()
-forward(5)
-left()
-forward(10)
-right()
-forward(10)`,
+forward(12)`,
     3: `# Level 3: A* Search
 # Use heuristics for efficient pathfinding
+# A* finds the most direct route
 
-forward(2)
+# Optimal A* path:
+forward(12)
 right()
-forward(4)
-left()
-forward(11)
-right()
-forward(11)`,
+forward(12)`,
     4: `# Level 4: Minimum Spanning Tree
 # Connect all nodes efficiently
+# MST approach for optimal connection
 
-forward(1)
-right()
-forward(2)
-left()
+# Optimal MST path:
 forward(12)
 right()
 forward(12)`,
@@ -325,42 +319,50 @@ const getLevelHints = (levelId: number) => {
   const hints = {
     1: {
       title: "Basic Movement",
+      realWorld: "🗺️ Google Maps Navigation",
       tips: [
         "🎯 Goal: Navigate to the target using simple commands",
         "📝 Use forward(n) to move n steps ahead",
         "🔄 Use left() and right() to turn 90 degrees",
         "💡 Plan your path: count steps and turns needed",
         "⚡ Optimal solution: 28 steps",
+        "🏭 Real Use: This is how GPS calculates basic routes!",
       ],
     },
     2: {
       title: "Dijkstra's Algorithm",
+      realWorld: "🌐 Internet Routing (OSPF)",
       tips: [
         "🎯 Goal: Find shortest path considering all edges",
         "📊 Dijkstra explores all possible paths systematically",
         "🔍 Algorithm maintains distance to each node",
         "💡 Think about weighted graph traversal",
         "⚡ Focus on exploring neighbors efficiently",
+        "🏭 Real Use: Powers internet packet routing globally!",
       ],
     },
     3: {
       title: "A* Search",
+      realWorld: "🎮 Video Game AI",
       tips: [
         "🎯 Goal: Use heuristics for efficient pathfinding",
         "🧠 A* combines actual cost + estimated cost to goal",
         "📐 Manhattan distance is a good heuristic here",
         "💡 Prioritize paths that seem most promising",
         "⚡ Should be faster than Dijkstra with good heuristic",
+        "🏭 Real Use: NPCs in games like StarCraft use this!",
       ],
     },
     4: {
       title: "Minimum Spanning Tree",
+      realWorld: "📡 Network Design",
       tips: [
         "🎯 Goal: Connect all reachable nodes efficiently",
         "🌳 MST finds minimum cost to connect all nodes",
         "🔗 Think about Kruskal's or Prim's algorithm",
         "💡 Focus on avoiding cycles while connecting",
         "⚡ Not about shortest path, but minimum connection cost",
+        "🏭 Real Use: Designing efficient network topologies!",
       ],
     },
   }
@@ -479,7 +481,10 @@ export default function GameInterface({ levelId, onBackToLevels, onBackToMenu }:
           <h1 className="text-2xl font-bold pixel-text text-foreground">
             LEVEL {levelId}: {levelInfo.name}
           </h1>
-          <Badge className="pixel-text text-xs bg-primary text-primary-foreground">{levelInfo.algorithm}</Badge>
+          <div className="flex items-center space-x-2 mt-1">
+            <Badge className="pixel-text text-xs bg-primary text-primary-foreground">{levelInfo.algorithm}</Badge>
+            <Badge className="pixel-text text-xs bg-yellow-500 text-black">{levelHints.realWorld}</Badge>
+          </div>
         </div>
 
         <div className="flex space-x-2">
@@ -559,6 +564,9 @@ export default function GameInterface({ levelId, onBackToLevels, onBackToMenu }:
               ))}
             </div>
           </Card>
+
+          {/* AI Code Review Component */}
+          <AICodeReview code={code} levelId={levelId} steps={stats.steps} optimal={stats.optimal} />
         </div>
 
         {/* Right Side - Game View */}
